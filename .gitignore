@@ -1,0 +1,7 @@
+# ide
+.idea
+.scalafmt.conf
+scalafmt
+
+# sbt
+target/
