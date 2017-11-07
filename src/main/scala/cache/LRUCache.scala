@@ -2,29 +2,29 @@ package cache
 
 import java.util.concurrent.ConcurrentHashMap
 
-class Node[V](val value: V) {
-  var prev: Node[V] = _
-  var next: Node[V] = _
+class Node[K, V](val key: K, val value: V) {
+  var prev: Node[K, V] = _
+  var next: Node[K, V] = _
 }
 
 object Node {
-  def apply[V](value: V): Node[V] = new Node(value)
+  def apply[K, V](key: K, value: V): Node[K, V] = new Node(key, value)
 }
 
 class LRUCache[K, V](val max: Int) {
-  private val map: ConcurrentHashMap[K, Node[V]] = new ConcurrentHashMap[K, Node[V]]()
-  private var head: Node[V] = _
-  private var last: Node[V] = _
+  private val map: ConcurrentHashMap[K, Node[K, V]] = new ConcurrentHashMap[K, Node[K, V]]()
+  private var head: Node[K, V] = _
+  private var last: Node[K, V] = _
 
-  def getHead: Node[V] = head
-  def getLast: Node[V] = last
+  def getHead: Node[K, V] = head
+  def getLast: Node[K, V] = last
 
   // 1. This is the n th element in the cache
   // 2. This is the first element in the cache
   // 3. Cache has already reached the max
   def put(key: K, value: V): Unit = {
     // Create the node that needs to be added
-    val node: Node[V] = Node(value)
+    val node: Node[K, V] = Node(key, value)
     if (head != null) {
       head.prev = node
       node.next = head
@@ -34,7 +34,7 @@ class LRUCache[K, V](val max: Int) {
     head = node
     map.put(key, node)
     if (map.size > max) {
-      map.remove(last.value)
+      map.remove(last.key)
       last = last.prev
       last.next = null
     }
