@@ -10,6 +10,10 @@ package random
   */
 object WordLadder {
 
+  /**
+    * @param word the word from the wordList
+    * @param len minimum chain length to reach this word
+    */
   case class Item(word: String, len: Int)
 
   // Check if the 2 strings differ by only 1 character
