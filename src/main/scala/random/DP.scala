@@ -147,4 +147,58 @@ object DP {
     lis.max
   }
 
+  // Longest common subsequence
+  def LCS(str1: String, str2: String, m: Int, n: Int): Int = {
+    if (m == 0 || n == 0) 0
+    else if (str1(m - 1) == str2(n - 1))
+      1 + LCS(str1, str2, m - 1, n - 1)
+    else Math.max(LCS(str1, str2, m, n - 1), LCS(str1, str2, m - 1, n))
+  }
+
+  val LCSMemo: scala.collection.mutable.Map[(String, String), Int] = scala.collection.mutable.Map.empty[(String, String), Int]
+  def LCSDP(str1: String, str2: String, m: Int, n: Int): Int = {
+    if (m == 0 || n == 0) 0
+    else if (str1(m - 1) == str2(n - 1)) {
+      LCSMemo.get((str1.substring(0, m - 1), str2.substring(0, n - 1))) match {
+        case Some(r) => 1 + r
+        case None => val res = 1 + LCSDP(str1, str2, m - 1, n - 1)
+          LCSMemo((str1.substring(0, m - 1), str2.substring(0, n - 1))) = res
+          res
+      }
+    }
+    else {
+      val r1 = LCSMemo.get((str1.substring(0, m - 1), str2.substring(0, n))) match {
+        case Some(r) => r
+        case None => val res = LCSDP(str1, str2, m - 1, n)
+          LCSMemo((str1.substring(0, m - 1), str2.substring(0, n))) = res
+          res
+      }
+      val r2 = LCSMemo.get((str1.substring(0, m), str2.substring(0, n - 1))) match {
+        case Some(r) => r
+        case None => val res = LCSDP(str1, str2, m, n - 1)
+          LCSMemo((str1.substring(0, m), str2.substring(0, n - 1))) = res
+          res
+      }
+      Math.max(r1, r2)
+    }
+  }
+
+  def LCSDPBottomUp(str1: String, str2: String, m: Int, n: Int): Int = {
+    // Define a matrix to store the results
+    val res: Array[Array[Int]] = Array.fill[Int](m + 1, n + 1)(0)
+
+    (0 to m).foreach { r =>
+      (0 to n).foreach { c =>
+        if (r == 0 || c == 0)
+          res(r)(c) = 0
+        else if (str1(r - 1) == str2(c - 1))
+          res(r)(c) = 1 + res(r - 1)(c - 1)
+        else
+          res(r)(c) = Math.max(res(r - 1)(c), res(r)(c - 1))
+      }
+    }
+
+    res(m)(n)
+  }
+
 }
