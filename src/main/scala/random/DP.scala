@@ -201,4 +201,26 @@ object DP {
     res(m)(n)
   }
 
+  // Problem statement: Lets say you a series of houses. h1, h2, ... hn
+  // There are 3 available colors: Red, Blue and Green.
+  // Each house has a cost (same or different) to be painted in each of the colors
+  // Constraint: No 2 adjacent houses can be painted with the same color
+  // Find the min cost to paint all the houses
+  // [10, 15, 5, 4]
+  // [5, 12, 7, 10]
+  // [7, 8, 3, 1]
+  // Answer: 19
+  def minPaintCost(costs: Array[Array[Int]]): Int = {
+    if (costs(0).length == 0) 0
+    else {
+      val size = costs(0).length
+      (1 until size).foreach { i =>
+        costs(0)(i) += Math.min(costs(1)(i - 1), costs(2)(i - 1))
+        costs(1)(i) += Math.min(costs(0)(i - 1), costs(2)(i - 1))
+        costs(2)(i) += Math.min(costs(0)(i - 1), costs(1)(i - 1))
+      }
+      Math.min(Math.min(costs(0)(size - 1), costs(1)(size - 1)), costs(2)(size - 1))
+    }
+  }
+
 }

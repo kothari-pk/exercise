@@ -48,4 +48,18 @@ object RunningMedian {
     medians
   }
 
+  def getMedianStream(stream: Stream[Int]): Stream[Double] = {
+    // MaxHeap
+    val lowerHalf: PriorityQueue[Int] = PriorityQueue.empty[Int]
+    // MinHeap
+    val upperHalf: PriorityQueue[Int] = PriorityQueue.empty(MinValue)
+    var medians: Stream[Double] = Stream.empty[Double]
+    stream.foreach { i =>
+      add(i, lowerHalf, upperHalf)
+      reBalance(lowerHalf, upperHalf)
+      medians = medians :+ getMedian(lowerHalf, upperHalf)
+    }
+    medians
+  }
+
 }
