@@ -17,7 +17,7 @@ object Random {
   // If the array has negative number then divide the array in positives and negatives
   // Constraint: Use no extra place
   // Trick: Use the index and the incrementing by 1 numbers
-  def minMissingNumnber(arr: Array[Int]): Int = {
+  def minMissingNumber(arr: Array[Int]): Int = {
     val size = arr.length
     (0 until size).foreach { i =>
       if(Math.abs(arr(i)) - 1 < size && arr(Math.abs(arr(i)) - 1) > 0) {

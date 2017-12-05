@@ -7,7 +7,7 @@ object DP {
   // Memoization DP solution
   def getMinSquares(n: Int): Int = {
     // base case
-    if(n < 3) n
+    if(n <= 3) n
     else {
       // Max numbers required is n
       // i.e. (1*1 + 1*1 + ...)
