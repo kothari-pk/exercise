@@ -106,11 +106,28 @@ object TreeProblems {
       case (None, None) => sum - tree.value == 0
     }
 
-//  def isMirror[A](t1: Tree[A], t2: Tree[A]): Boolean =
-//    (t1.left, t1.right, t2.left, t2.right) match {
-//      case (Some(t1l), Some(t1r), Some(t2l), Some(t2r)) if t1.value == t2.value => isMirror(t1l, t2r) && isMirror(t2l, t1r)
-//      case (Some(t1l), None, None, Some(tr2)) =>
-//    }
+  def isMirror[A](t1: Tree[A], t2: Tree[A]): Boolean =
+    (t1.left, t1.right, t2.left, t2.right) match {
+      case (Some(t1l), Some(t1r), Some(t2l), Some(t2r)) if t1.value == t2.value => isMirror(t1l, t2r) && isMirror(t2l, t1r)
+      case (Some(t1l), None, None, Some(t2r)) if t1.value == t2.value => isMirror(t1l, t2r)
+      case (None, Some(t1r), Some(t2l), None) if t1.value == t2.value => isMirror(t2l, t1r)
+      case (None, None, None, None) => true
+      case _ => false
+    }
+
+  class Count { var c: Int = _}
+  def kthLargestInBst(bst: Option[Tree[Int]], k: Int, count: Count): Unit =
+    bst match {
+      case None => ()
+      case Some(t) =>
+        kthLargestInBst(t.right, k, count)
+        count.c += 1
+        if (count.c == k) {
+          println(s"The kth largest element is ${t.value}")
+          return ()
+        }
+        kthLargestInBst(t.left, k, count)
+    }
 
 }
 
@@ -136,5 +153,6 @@ object TreeProblemsTest extends App {
     println(isBST(bst))
     println(isBalanced(bst))
     println(hasPathSum(bst, 16))
+    kthLargestInBst(Some(bst), 3, new Count)
   }
 }
