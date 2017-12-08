@@ -2,7 +2,7 @@ package random
 
 object LinesInSpace {
 
-  // Find the number of lines in a 2 D plane of points
+  // Find the max points on a lines in a 2 D plane of points
   // Input are coordinates (x, y)
   // Solution:
   // TIP: To make a line we need 2 points

@@ -45,6 +45,12 @@ object TreeProblems {
   //     4         10
   //  3    5    9      12
   // LCA(3, 5) = 4, LCA(4, 10) = 8, LCA(3, 9) = 8, LCA(3, 4) = 4
+  // We start from the root. If any of the keys are present in the root. Root is the LCA
+  // Else we traverse left and right.
+  // For a node if one key is present in the left and other in the right. Node is the LCA
+  // If both keys lie in left subtree, then left subtree has LCA
+  // If both keys lie in right subtree, then right subtree has LCA
+  // Else not found
   def lowestCommonAncestor[A](
       tree: Tree[Int],
       m: Int,

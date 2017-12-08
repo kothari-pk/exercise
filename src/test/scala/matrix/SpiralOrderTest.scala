@@ -1,9 +1,9 @@
-package random
+package matrix
 
 import org.scalatest.{FlatSpec, Matchers}
-import Random._
+import SpiralOrder._
 
-class RandomTest extends FlatSpec with Matchers {
+class SpiralOrderTest extends FlatSpec with Matchers {
 
   "spiralOrder" should "print the matrix is spiral order" in {
     val m: Array[Array[Int]] = Array(Array(1, 2, 3), Array(4, 5, 6), Array(7, 8, 9))
