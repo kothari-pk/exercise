@@ -22,6 +22,7 @@ object Links {
     }
   }
 
+  // This should probably be implemented as bfs with graph
   def findAllUniqueLinks1(url: String): Set[String] = {
     def find(urls: List[String], result: Set[String] = Set.empty[String]): Set[String] = {
       if (urls.isEmpty) result

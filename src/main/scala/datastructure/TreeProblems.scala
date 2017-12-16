@@ -135,6 +135,26 @@ object TreeProblems {
         kthLargestInBst(t.left, k, count)
     }
 
+  def verticalSum(tree: Tree[Int], index: Int): Option[Int] = {
+    // Store the vertical sum in the Map
+    val indexToValue: scala.collection.mutable.Map[Int, Int] = scala.collection.mutable.Map.empty[Int, Int]
+    def buildMap(t: Option[Tree[Int]], currIndex: Int = 0): Unit =
+      t match {
+        case Some(n) =>
+          val data = n.value
+          indexToValue.get(currIndex) match {
+            case Some(d) => indexToValue += (currIndex -> (d + data))
+            case None =>  indexToValue += (currIndex -> data)
+          }
+          buildMap(n.left, currIndex - 1)
+          buildMap(n.right, currIndex + 1)
+        case None => ()
+      }
+
+    buildMap(Some(tree))
+    indexToValue.get(index)
+  }
+
 }
 
 object TreeProblemsTest extends App {
@@ -155,10 +175,25 @@ object TreeProblemsTest extends App {
           Some(Tree[Int](20, None, None))))
     )
 
+    val tree: Tree[Int] = Tree[Int](
+      1,
+      Some(
+        Tree[Int](
+          2,
+          Some(Tree[Int](4, None, None)),
+          Some(Tree[Int](5, None, None)))),
+      Some(
+        Tree[Int](
+          3,
+          Some(Tree[Int](7, None, None)),
+          Some(Tree[Int](6, None, None))))
+    )
+
     println(lowestCommonAncestor[Int](bst, 1, 12).get.value)
     println(isBST(bst))
     println(isBalanced(bst))
     println(hasPathSum(bst, 16))
     kthLargestInBst(Some(bst), 3, new Count)
+    println(verticalSum(tree, 0))
   }
 }
