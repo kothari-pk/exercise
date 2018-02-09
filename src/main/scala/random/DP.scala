@@ -4,6 +4,7 @@ object DP {
 
   val minSquaresCache: scala.collection.mutable.Map[Int, Int] = scala.collection.mutable.Map.empty[Int, Int]
 
+  // Given a number n, find the minimum number of squares that sum to X
   // Memoization DP solution
   def getMinSquares(n: Int): Int = {
     // base case
@@ -220,6 +221,41 @@ object DP {
         costs(2)(i) += Math.min(costs(0)(i - 1), costs(1)(i - 1))
       }
       Math.min(Math.min(costs(0)(size - 1), costs(1)(size - 1)), costs(2)(size - 1))
+    }
+  }
+
+  // n is the number of eggs
+  // k is the number of floors
+  // get minimum number of trials needed in worst case
+  val eggDropMemo: scala.collection.mutable.Map[(Int, Int), Int] = scala.collection.mutable.Map.empty[(Int, Int), Int]
+  def eggDrop(n: Int, k: Int): Int = {
+    if (k == 0 || k == 1) k
+    else if (n == 1) k
+    else {
+      var minTrial: Int = Int.MaxValue
+      var res: Int = 0
+      // Consider all droppings from 1st floor to kth floor and
+      // return the minimum of these values plus 1
+      (1 to k).foreach { i =>
+        // Check if the problems are already solved
+        val ed1 = eggDropMemo.get(n - 1, i - 1) match {
+          case Some(r) => r
+          case None =>
+            val res = eggDrop(n - 1, i - 1)
+            eggDropMemo += (n - 1, i - 1) -> res
+            res
+        }
+        val ed2 = eggDropMemo.get(n, k - i) match {
+          case Some(r) => r
+          case None =>
+            val res = eggDrop(n, k - i)
+            eggDropMemo += (n, k - i) -> res
+            res
+        }
+        res = Math.max(ed1, ed2)
+        minTrial = Math.min(minTrial, res)
+      }
+      minTrial + 1
     }
   }
 

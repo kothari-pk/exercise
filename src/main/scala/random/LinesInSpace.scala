@@ -46,8 +46,10 @@ object LinesInSpace {
             val g = gcd(xDiff, yDiff)
 
             // Reduce the difference with the gcd
-            yDiff /= g
-            xDiff /= g
+            if (g != 0) {
+              yDiff /= g
+              xDiff /= g
+            }
             // Now update the slopeToCount map
             val c = slopeToCount.getOrElse((yDiff, xDiff), 0)
             slopeToCount += (yDiff, xDiff) -> (c + 1)

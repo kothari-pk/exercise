@@ -1,8 +1,10 @@
 package random
 
+import scala.collection.mutable
+
 object CommonTime extends App {
 
-  case class Point(v: Int, isStart: Boolean)
+  case class Point(time: Int, isStart: Boolean)
 
   // p1 -> (10, 20) (40, 50) (70, 80)
   // p2 -> (15, 25) (30, 48)
@@ -13,8 +15,8 @@ object CommonTime extends App {
     val s1 = p1.length
     val s2 = p2.length
     // First convert both the timeslots to points
-    val point1: scala.collection.mutable.MutableList[Point] = scala.collection.mutable.MutableList.empty[Point]
-    val point2: scala.collection.mutable.MutableList[Point] = scala.collection.mutable.MutableList.empty[Point]
+    val point1: mutable.MutableList[Point] = mutable.MutableList.empty[Point]
+    val point2: mutable.MutableList[Point] = mutable.MutableList.empty[Point]
 
     (0 until s1).foreach { i =>
       point1 += Point(p1(i)._1, true)
@@ -27,13 +29,13 @@ object CommonTime extends App {
     }
 
     // Add both the arrays
-    val points = (point1 ++ point2).sortBy(_.v)
+    val points = (point1 ++ point2).sortBy(_.time)
     var previous: Point = points.head
     var previousStartCount: Int = 1
     var max = -1
     points.tail.foreach { curr =>
       if (previous.isStart && !curr.isStart && previousStartCount >= 2) {
-        max = Math.max(max, curr.v - previous.v)
+        max = Math.max(max, curr.time - previous.time)
       }
       else if(previous.isStart && curr.isStart) previousStartCount += 1
       else if(!previous.isStart && curr.isStart) previousStartCount += 1
